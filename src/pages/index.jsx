@@ -17,9 +17,8 @@ import image2 from '@/images/photos/image-2.jpeg'
 import image3 from '@/images/photos/image-3.jpeg'
 import image4 from '@/images/photos/image-4.jpeg'
 import image5 from '@/images/photos/image-5.jpeg'
-import logoNucleon from '@/images/logos/logoNucleon.png'
-import logoSkillVertex from '@/images/logos/logoSkillVertex.png'
-import logoMitsubishi from '@/images/logos/logoMitsubishi.png'
+import logoIITJammu from '@/images/logos/logoIITJammu.png'
+import logoSaar from '@/images/logos/logoSaar.png'
 import { formatDate } from '@/lib/formatDate'
 import { client, urlFor } from "@/lib/sanity"
 import { useState, useEffect } from 'react';
@@ -109,66 +108,25 @@ function SocialLink({ icon: Icon, ...props }) {
   )
 }
 
-function Newsletter() {
-  return (
-    <form
-      action="/thank-you"
-      className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
-    >
-      <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-        <MailIcon className="h-6 w-6 flex-none" />
-        <span className="ml-3">Stay up to date</span>
-      </h2>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-        Get notified when I publish something new, and unsubscribe at any time.
-      </p>
-      <div className="mt-6 flex">
-        <input
-          type="email"
-          placeholder="Email address"
-          aria-label="Email address"
-          required
-          className="min-w-0 flex-auto appearance-none rounded-md border border-zinc-900/10 bg-white px-3 py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 dark:border-zinc-700 dark:bg-zinc-700/[0.15] dark:text-zinc-200 dark:placeholder:text-zinc-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/10 sm:text-sm"
-        />
-        <Button type="submit" className="ml-4 flex-none">
-          Join
-        </Button>
-      </div>
-    </form>
-  )
-}
 
 function Resume() {
   let resume = [
     {
-      company: 'SkillVertex',
-      title: 'Internship in Artificial Intelligence',
-      desc: 'Artificial Intelligence live projects from Artifintel in association with SkillVertex from 5th September to 5th October 2022 and training from 1st August to 30th August.',
-      logo: logoSkillVertex,
-      start: 'Sept 2022',
-      end: 'Oct 2022',
-      // start: '2019',
-      // end: {
-      //   label: 'Present',
-      //   dateTime: new Date().getFullYear(),
-      // },
+      company: 'SAAR System Solutions',
+      title: 'Research Project Intern',
+      desc: 'Worked on solar-powered EV charging system (290W PV, 48V battery). Analysed 3000+ hours of data and developed ML models (Random Forest R²=0.9971, XGBoost R²=0.9937) for short-term forecasting. Contributed to IEEE conference paper (ICRERA 2025, Vienna).',
+      logo: logoSaar,
+      start: 'Jul 2025',
+      end: 'Dec 2025',
     },
     {
-      company: 'Nucleon',
-      title: 'Internship in IoT & Mechatronics',
-      desc: 'Nucleon an IIT Jammu incubated startup has emerged as an important entity which is making a significant impact on the scenic landscape of Jammu & Kashmir and nearby regions. Nucleon is working to build a sustainable and holistic ecosystem for skill development, mentorship and training.',
-      logo: logoNucleon,
-      start: 'Jun 15, 2023',
-      end: 'Jul 26, 2023',
-    },
-    {
-      company: 'Mitsubishi Electric India',
-      title: 'MEL SEC iQ-F TRAINING SESSION, ONLINE',
-      desc: 'Mitsubishi Electric India in association with ATC MIET Jammu organized an Online/Offline MEL SEC IQ-F PLC training session Mitsubishi Electric India in association with ATC MIET Jammu organized an Online/Offline MEL SEC IQ-F PLC training session Mitsubishi Electric India in association with ATC MIET Jammu organized an Online/Offline MEL SEC IQ-F PLC training session.',
-      logo: logoMitsubishi,
-      start: 'Apr 2022',
-      end: 'Apr 2022',
-    },
+      company: 'IIT Jammu',
+      title: 'Project Intern',
+      desc: 'Built real-time EV monitoring system using ESP32 SIM800L, RS-485, Firebase. Designed BLDC inverter using IR2110 with 100kHz PWM. Simulated high-efficiency buck converter in LTSpice for EV charging.',
+      logo: logoIITJammu,
+      start: 'Feb 2025',
+      end: 'Jun 2025',
+    }
   ]
 
   return (
@@ -177,47 +135,46 @@ function Resume() {
         <BriefcaseIcon className="h-6 w-6 flex-none" />
         <span className="text-sm ml-3">Experience</span>
       </h2>
+
       <ol className="mt-6 space-y-4">
         {resume.map((role, roleIndex) => (
           <li key={roleIndex} className="flex gap-4">
-            <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-              <Image src={role.logo} alt="" className="h-7 w-7" unoptimized priority/>
+            <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800">
+              <Image src={role.logo} alt="" className="h-7 w-7 rounded-full object-contain bg-white p-1" unoptimized priority />
             </div>
+
             <dl className="flex flex-auto flex-wrap gap-x-2">
-              <dt className="sr-only">Company</dt>
-              <dd className="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              <dd className="w-full text-sm font-medium text-zinc-900 dark:text-zinc-100">
                 {role.company}
               </dd>
-              <dt className="sr-only">Role</dt>
-              <dd className="mt-4 font-bold text-sm text-zinc-500 dark:text-zinc-400">
+
+              <dd className="mt-2 font-semibold text-sm text-zinc-500 dark:text-zinc-400">
                 {role.title}
               </dd>
-              <dt className="sr-only">Description</dt>
-              <dd className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
+
+              <dd className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
                 {role.desc}
               </dd>
-              <dt className="sr-only">Date</dt>
-              <dd
-                className="mt-3 ml-auto text-sm text-zinc-400 dark:text-zinc-500"
-                aria-label={`${role.start.label ?? role.start} until ${role.end.label ?? role.end
-                  }`}
-              >
-                <time dateTime={role.start.dateTime ?? role.start}>
-                  {role.start.label ?? role.start}
-                </time>{' '}
-                <span aria-hidden="true">—</span>{' '}
-                <time dateTime={role.end.dateTime ?? role.end}>
-                  {role.end.label ?? role.end}
-                </time>
+
+              <dd className="mt-2 ml-auto text-sm text-zinc-400 dark:text-zinc-500">
+                <time>{role.start}</time> — <time>{role.end}</time>
               </dd>
             </dl>
           </li>
         ))}
       </ol>
-      <Button href="./SUSHANT SAROCH - RESUME.pdf" variant="secondary" className="group mt-6 w-full">
-        Download Resume
-        <ArrowDownIcon className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50" />
-      </Button>
+
+      {/* Resume Button (Google Drive link) */}
+      <a
+        href="https://drive.google.com/file/d/1rfdPtS-hlJ3oGVN2tTjWsap_eAtV1Y6E/view?usp=drive_link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button variant="secondary" className="group mt-6 w-full">
+          View Resume
+          <ArrowDownIcon className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50" />
+        </Button>
+      </a>
     </div>
   )
 }
@@ -346,7 +303,6 @@ export default function Home() {
             ))}
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
-            <Newsletter />
             <Resume />
           </div>
         </div>
