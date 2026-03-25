@@ -1,100 +1,120 @@
 import Image from 'next/image'
 import Head from 'next/head'
+import Link from 'next/link'
 
 import { Card } from '@/components/Card'
 import { SimpleLayout } from '@/components/SimpleLayout'
-import { formatDate } from '@/lib/formatDate'
-import { client, urlFor } from "@/lib/sanity"
-import { useState, useEffect } from 'react';
+import { client, projectCardFields, urlFor } from '@/lib/sanity'
+import { GitHubIcon } from '@/components/SocialIcons'
 
-export const revalidate = 30 // revalidate at most every 30 sec
-
-
-function LinkIcon(props) {
+function SocialLink({ icon: Icon, children, ...props }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
-      <path
-        d="M15.712 11.823a.75.75 0 1 0 1.06 1.06l-1.06-1.06Zm-4.95 1.768a.75.75 0 0 0 1.06-1.06l-1.06 1.06Zm-2.475-1.414a.75.75 0 1 0-1.06-1.06l1.06 1.06Zm4.95-1.768a.75.75 0 1 0-1.06 1.06l1.06-1.06Zm3.359.53-.884.884 1.06 1.06.885-.883-1.061-1.06Zm-4.95-2.12 1.414-1.415L12 6.344l-1.415 1.413 1.061 1.061Zm0 3.535a2.5 2.5 0 0 1 0-3.536l-1.06-1.06a4 4 0 0 0 0 5.656l1.06-1.06Zm4.95-4.95a2.5 2.5 0 0 1 0 3.535L17.656 12a4 4 0 0 0 0-5.657l-1.06 1.06Zm1.06-1.06a4 4 0 0 0-5.656 0l1.06 1.06a2.5 2.5 0 0 1 3.536 0l1.06-1.06Zm-7.07 7.07.176.177 1.06-1.06-.176-.177-1.06 1.06Zm-3.183-.353.884-.884-1.06-1.06-.884.883 1.06 1.06Zm4.95 2.121-1.414 1.414 1.06 1.06 1.415-1.413-1.06-1.061Zm0-3.536a2.5 2.5 0 0 1 0 3.536l1.06 1.06a4 4 0 0 0 0-5.656l-1.06 1.06Zm-4.95 4.95a2.5 2.5 0 0 1 0-3.535L6.344 12a4 4 0 0 0 0 5.656l1.06-1.06Zm-1.06 1.06a4 4 0 0 0 5.657 0l-1.061-1.06a2.5 2.5 0 0 1-3.535 0l-1.061 1.06Zm7.07-7.07-.176-.177-1.06 1.06.176.178 1.06-1.061Z"
-        fill="currentColor"
-      />
-    </svg>
+    <Link className="group mt-4 flex items-center gap-2" {...props}>
+      <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
+      <span className="text-sm text-zinc-500 group-hover:text-zinc-900 dark:text-zinc-400 dark:group-hover:text-zinc-100">
+        {children}
+      </span>
+    </Link>
   )
 }
 
-export default function Projects() {
-  const [projects, setPosts] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const query = `
-            *[_type == 'project'] | order(_createdAt desc){
-              title,
-                smallDescription,
-                'currentSlug': slug.current,
-                projectLogo,
-                url,
-                label,
-                publishedAt,
-              }`;
-        const res = await client.fetch(query);
-        setPosts(res);
-        // console.log("result: ",res[0].title)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchData();
-  }, []);
+export default function Projects({ projects = [] }) {
   return (
     <>
       <Head>
         <title>Sushant Saroch | Projects</title>
         <meta
           name="description"
-          content="Things I’ve made trying to put my dent in the universe."
+          content="Things I’ve built in Embedded Systems, IoT, and AI."
         />
       </Head>
+
       <SimpleLayout
-        title="Things I’ve made trying to put my dent in the universe."
-        intro="I’ve worked on tons of little projects over the years but these are the ones that I’m most proud of. Many of them are open-source, so if you see something that piques your interest, check out the code and contribute if you have ideas for how it can be improved."
+        title="Things I’ve built trying to solve real-world problems."
+        intro="A collection of my projects across Embedded Systems, IoT, Machine Learning, and Power Electronics. Each project reflects hands-on engineering and practical implementation."
       >
-        <ul
-          role="list"
-          className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-            <Card as="li" key={project.title}>
-              <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-                <Image
-                  src={urlFor(project.projectLogo).url()}
-                  alt="Logo"
-                  className="h-8 w-8"
-                  width={500}
-                  height={500}
-                  priority
-                  unoptimized
-                />
-                
+            <Card
+              as="li"
+              key={project.slug}
+              className="group rounded-2xl p-4 transition duration-300 hover:-translate-y-1 hover:bg-zinc-100 hover:shadow-lg dark:hover:bg-zinc-800 dark:hover:shadow-xl"
+            >
+              {project.image && (
+                <div className="overflow-hidden rounded-xl">
+                  <Image
+                    src={urlFor(project.image).width(960).height(576).quality(70).url()}
+                    alt={project.image.alt || project.title}
+                    width={960}
+                    height={576}
+                    className="h-[180px] w-full object-cover transition group-hover:scale-105"
+                    unoptimized
+                  />
+                </div>
+              )}
+
+              {project.featured && (
+                <span className="mt-3 inline-block rounded bg-green-500/10 px-2 py-1 text-xs text-green-700 transition group-hover:text-green-800 dark:text-green-400 dark:group-hover:text-green-300">
+                  Featured
+                </span>
+              )}
+
+              <Card.Title as="h2" href={`/projects/${project.slug}`} className="mt-4">
+                {project.title}
+              </Card.Title>
+
+              <Card.Description>{project.description}</Card.Description>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                {project.techStack?.map((tech, index) => (
+                  <span
+                    key={index}
+                    className="rounded bg-zinc-200 px-2 py-1 text-xs text-zinc-800 transition group-hover:bg-zinc-300 group-hover:text-zinc-900 dark:bg-zinc-700 dark:text-zinc-100 dark:group-hover:bg-zinc-600 dark:group-hover:text-zinc-100"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
-              <div className='mt-6'>
-              <Card.Eyebrow as="time" dateTime={project.publishedAt} decorate>
-                {formatDate(project.publishedAt)}
-              </Card.Eyebrow>
+
+              <div className="mt-5 flex gap-3">
+                {project.githubUrl && (
+                  <SocialLink href={project.githubUrl} icon={GitHubIcon}>
+                    Open on GitHub
+                  </SocialLink>
+                )}
+
+                {project.liveUrl && (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-zinc-500 transition group-hover:text-zinc-900 dark:text-zinc-400 dark:group-hover:text-zinc-100"
+                  >
+                    Live
+                  </a>
+                )}
               </div>
-              <h2 className="mt-2 text-base font-semibold text-zinc-800 dark:text-zinc-100">
-                <Card.Link href={project.url}>{project.title}</Card.Link>
-              </h2>
-              
-              <Card.Description>{project.smallDescription}</Card.Description>
-              <p className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
-                <LinkIcon className="h-6 w-6 flex-none" />
-                <span className="ml-2">{project.label}</span>
-              </p>
             </Card>
           ))}
         </ul>
       </SimpleLayout>
     </>
   )
+}
+
+export async function getStaticProps() {
+  const query = `
+    *[_type == 'project'] | order(publishedAt desc){
+      ${projectCardFields()}
+    }
+  `
+
+  const projects = await client.fetch(query)
+
+  return {
+    props: {
+      projects: projects ?? [],
+    },
+    revalidate: 30,
+  }
 }

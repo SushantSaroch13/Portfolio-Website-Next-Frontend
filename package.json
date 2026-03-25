@@ -37,6 +37,8 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
+    "browserslist": "^4.28.1",
+    "caniuse-lite": "^1.0.30001781",
     "eslint": "8.26.0",
     "eslint-config-next": "^14.1.0",
     "prettier": "^2.7.1",

@@ -5,18 +5,30 @@ import rehypePrism from '@mapbox/rehype-prism'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx'],
+
   reactStrictMode: true,
+
   experimental: {
     scrollRestoration: true,
   },
+
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.cache = false
+    }
+
+    return config
+  },
+
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "cdn.sanity.io",
-        port: "",
       },
     ],
+
+    unoptimized: true,
   },
 }
 

@@ -7,11 +7,12 @@ import { Button } from '@/components/Button'
 import { Card } from '@/components/Card'
 import { Container } from '@/components/Container'
 import {
-  TwitterIcon,
+  // TwitterIcon,
   InstagramIcon,
   GitHubIcon,
   LinkedInIcon,
 } from '@/components/SocialIcons'
+import { MailIcon, BriefcaseIcon, CodeIcon, ArrowDownIcon } from '@/components/Icons'
 import image1 from '@/images/photos/image-1.jpeg'
 import image2 from '@/images/photos/image-2.jpeg'
 import image3 from '@/images/photos/image-3.jpeg'
@@ -20,82 +21,39 @@ import image5 from '@/images/photos/image-5.jpeg'
 import logoIITJammu from '@/images/logos/logoIITJammu.png'
 import logoSaar from '@/images/logos/logoSaar.png'
 import { formatDate } from '@/lib/formatDate'
-import { client, urlFor } from "@/lib/sanity"
-import { useState, useEffect } from 'react';
+import { client, projectCardFields, urlFor } from '@/lib/sanity'
 
-
-function MailIcon(props) {
-  return (    
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
-      <path
-        d="M2.75 7.75a3 3 0 0 1 3-3h12.5a3 3 0 0 1 3 3v8.5a3 3 0 0 1-3 3H5.75a3 3 0 0 1-3-3v-8.5Z"
-        className="fill-zinc-100 stroke-zinc-400 dark:fill-zinc-100/10 dark:stroke-zinc-500"
-      />
-      <path
-        d="m4 6 6.024 5.479a2.915 2.915 0 0 0 3.952 0L20 6"
-        className="stroke-zinc-400 dark:stroke-zinc-500"
-      />
-    </svg>
-  )
-}
-
-
-function BriefcaseIcon(props) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
-      <path
-        d="M2.75 9.75a3 3 0 0 1 3-3h12.5a3 3 0 0 1 3 3v8.5a3 3 0 0 1-3 3H5.75a3 3 0 0 1-3-3v-8.5Z"
-        className="fill-zinc-100 stroke-zinc-400 dark:fill-zinc-100/10 dark:stroke-zinc-500"
-      />
-      <path
-        d="M3 14.25h6.249c.484 0 .952-.002 1.316.319l.777.682a.996.996 0 0 0 1.316 0l.777-.682c.364-.32.832-.319 1.316-.319H21M8.75 6.5V4.75a2 2 0 0 1 2-2h2.5a2 2 0 0 1 2 2V6.5"
-        className="stroke-zinc-400 dark:stroke-zinc-500"
-      />
-    </svg>
-    
-  )
-}
-
-function ArrowDownIcon(props) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
-      <path
-        d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-function Article({ article }) {
+function ProjectCard({ project }) {
   return (
     <Card as="article">
-      <Card.Title href={`/article/${article.currentSlug}`}>
-        {article.title}
-      </Card.Title>
-      <Card.Eyebrow as="time" dateTime={article.publishedAt} decorate>
-        {formatDate(article.publishedAt)}
-      </Card.Eyebrow>
-      <Card.Description>{article.smallDescription}</Card.Description>
-      <Card.Cta>Read article</Card.Cta>
+      <Link href={`/projects/${project.slug}`} className="block group">
+        <div className="overflow-hidden rounded-xl">
+          {project.image && (
+            <Image
+              src={urlFor(project.image).width(720).height(432).quality(65).url()}
+              alt={project.image.alt || project.title}
+              width={720}
+              height={432}
+              className="h-40 w-full object-cover transition group-hover:scale-105"
+              unoptimized
+            />
+          )}
+        </div>
+
+        <Card.Title>{project.title}</Card.Title>
+
+        <Card.Description>{project.description}</Card.Description>
+
+        <div className="mt-3 flex items-center">
+          <p className="mr-auto text-sm text-teal-500 opacity-0 transition group-hover:opacity-100">
+            View Project →
+          </p>
+
+          <p className="ml-auto text-sm text-zinc-400 dark:text-zinc-500">
+            {project.publishedAt && formatDate(project.publishedAt)}
+          </p>
+        </div>
+      </Link>
     </Card>
   )
 }
@@ -107,7 +65,6 @@ function SocialLink({ icon: Icon, ...props }) {
     </Link>
   )
 }
-
 
 function Resume() {
   let resume = [
@@ -126,21 +83,26 @@ function Resume() {
       logo: logoIITJammu,
       start: 'Feb 2025',
       end: 'Jun 2025',
-    }
+    },
   ]
 
   return (
-    <div className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
+    <div className="rounded-2xl border border-zinc-100 p-6 transition hover:bg-zinc-50 dark:border-zinc-700/40 dark:hover:bg-zinc-800/40">
       <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
         <BriefcaseIcon className="h-6 w-6 flex-none" />
-        <span className="text-sm ml-3">Experience</span>
+        <span className="ml-3 text-sm">Experience</span>
       </h2>
 
       <ol className="mt-6 space-y-4">
         {resume.map((role, roleIndex) => (
           <li key={roleIndex} className="flex gap-4">
             <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800">
-              <Image src={role.logo} alt="" className="h-7 w-7 rounded-full object-contain bg-white p-1" unoptimized priority />
+              <Image
+                src={role.logo}
+                alt=""
+                className="h-7 w-7 rounded-full bg-white object-contain p-1"
+                unoptimized
+              />
             </div>
 
             <dl className="flex flex-auto flex-wrap gap-x-2">
@@ -148,13 +110,11 @@ function Resume() {
                 {role.company}
               </dd>
 
-              <dd className="mt-2 font-semibold text-sm text-zinc-500 dark:text-zinc-400">
+              <dd className="mt-2 text-sm font-semibold text-zinc-500 dark:text-zinc-400">
                 {role.title}
               </dd>
 
-              <dd className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-                {role.desc}
-              </dd>
+              <dd className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{role.desc}</dd>
 
               <dd className="mt-2 ml-auto text-sm text-zinc-400 dark:text-zinc-500">
                 <time>{role.start}</time> — <time>{role.end}</time>
@@ -164,7 +124,6 @@ function Resume() {
         ))}
       </ol>
 
-      {/* Resume Button (Google Drive link) */}
       <a
         href="https://drive.google.com/file/d/1rfdPtS-hlJ3oGVN2tTjWsap_eAtV1Y6E/view?usp=drive_link"
         target="_blank"
@@ -180,13 +139,12 @@ function Resume() {
 }
 
 function Photos() {
-  let rotations = ['rotate-0', 'rotate-0', 'rotate-0', 'rotate-0', 'rotate-0'];
+  let rotations = ['rotate-0', 'rotate-0', 'rotate-0', 'rotate-0', 'rotate-0']
 
   return (
-    <div className="mt-16 sm:mt-20 overflow-x-auto flex">
+    <div className="mt-16 flex overflow-x-auto sm:mt-20">
       <style>
         {`
-          /* Hide the horizontal scrollbar */
           .overflow-x-auto::-webkit-scrollbar {
             display: none;
           }
@@ -203,7 +161,6 @@ function Photos() {
           >
             <Image
               src={image}
-              priority
               alt=""
               sizes="(min-width: 640px) 18rem, 11rem"
               className="absolute inset-0 h-full w-full object-cover"
@@ -212,69 +169,37 @@ function Photos() {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-
-
-
-
-
-export const revalidate = 30 // revalidate at most every 30 sec
-
-export default function Home() {
-  const [post, setPosts] = useState([]);
-
-  useEffect( () => { 
-      async function fetchData() {
-          try {
-            const query = `
-            *[_type == 'blog'] | order(_createdAt desc) [0...4]{
-              title,
-                smallDescription,
-                'currentSlug': slug.current,
-                publishedAt
-              }`;
-              const res = await client.fetch(query); 
-              setPosts(res);
-              // console.log("result: ",res[0].publishedAt)
-          } catch (err) {
-              console.log(err);
-          }
-      }
-      fetchData();
-  }, []);
-  // console.log("Post: ", post);
+export default function Home({ projects = [] }) {
   return (
     <>
       <Head>
-        <title>
-          Sushant Saroch | Home
-        </title>
+        <title>Sushant Saroch | Home</title>
         <meta
           name="description"
-          content=" Hi, I'm Sushant, an Electronics Innovator Creates Energy-Efficient Solution for Sustainable Tech"
+          content="Hi, I am Sushant, an Electronics Innovator Creates Energy-Efficient Solution for Sustainable Tech"
         />
       </Head>
       <Container className="mt-9">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-          Circuit Design for Enhanced Efficiency | AI Powers Smarter Devices | Signal Processing Enthusiast
+            Electronics Engineer | Embedded Systems | AI & Energy Systems
           </h1>
+
           <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-            Hi, I&apos;m Sushant, a passionate Electronics and Communication Engineer with a flair for 
-            innovation and a drive to revolutionize the tech industry. Specializing in AI integration, 
-            signal processing, and wireless communication, I thrive on solving complex challenges and 
-            pushing boundaries. With a track record of pioneering breakthroughs in smart systems and 
-            predictive maintenance, I&apos;m dedicated to shaping the future of electronics technology. 
-            Let&apos;s connect and collaborate to create the next generation of transformative solutions together.
+            Hi, I am Sushant — I enjoy building things at the intersection of hardware and
+            intelligence. My work focuses on embedded systems, IoT, and energy-efficient designs,
+            where I explore how electronics and software can come together to solve real-world
+            problems.
+            <br />
+            <br />
+            I like working on projects that are practical, efficient, and a bit challenging —
+            whether that’s designing circuits, writing firmware, or experimenting with data-driven
+            systems.
           </p>
           <div className="mt-6 flex gap-6">
-            {/* <SocialLink
-              href="https://twitter.com/vinzvinci"
-              aria-label="Follow on Twitter"
-              icon={TwitterIcon}
-            /> */}
             <SocialLink
               href="https://www.instagram.com/sushantsaroch/"
               aria-label="Follow on Instagram"
@@ -290,17 +215,34 @@ export default function Home() {
               aria-label="Follow on LinkedIn"
               icon={LinkedInIcon}
             />
+            <SocialLink href="mailto:sushantsaroch13@gmail.com" aria-label="Mail Me" icon={MailIcon} />
           </div>
         </div>
       </Container>
       <Photos />
       <Container className="mt-24 md:mt-28">
-        <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
-          <div className="flex flex-col gap-16">
+        <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2 ">
+          <div className="space-y-6">
+            <div className="rounded-2xl border border-zinc-100 p-6 transition hover:bg-zinc-50 dark:border-zinc-700/40 dark:hover:bg-zinc-800/40">
+              <h2 className="mb-6 flex text-sm font-semibold text-zinc-900 dark:text-zinc-100 ">
+                <CodeIcon className="h-6 w-6 flex-none" />
+                <span className="ml-3 text-sm">Featured Projects</span>
+              </h2>
 
-            {post?.map((article, idx) => (
-              <Article key={idx} article={article} />
-            ))}
+              <div className="flex flex-col gap-6 ">
+                {projects.map((project) => (
+                  <ProjectCard key={project.slug} project={project} />
+                ))}
+              </div>
+
+              <div className="mt-10 border-t border-zinc-100 dark:border-zinc-700/40">
+                <Link href="/projects">
+                  <Button variant="secondary" className="w-full">
+                    View All Projects
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
             <Resume />
@@ -311,3 +253,20 @@ export default function Home() {
   )
 }
 
+export async function getStaticProps() {
+  const query = `
+    *[_type == 'project' && featured == true]
+    | order(publishedAt desc)[0...2]{
+      ${projectCardFields()}
+    }
+  `
+
+  const projects = await client.fetch(query)
+
+  return {
+    props: {
+      projects: projects ?? [],
+    },
+    revalidate: 30,
+  }
+}

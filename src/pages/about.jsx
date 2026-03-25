@@ -68,17 +68,14 @@ export default function About() {
                 Hey there 👋
               </p>
               <p>
-                My name is Sushant Saroch, I&apos;m Passionate Electronics and Communication Engineer with a flair for
-                innovation and a drive to revolutionize the tech industry. Specializing
-                in AI integration, signal processing, and wireless communication,
-                I thrive on solving complex challenges and pushing boundaries.
-                With a track record of pioneering breakthroughs in smart systems
-                and predictive maintenance, I&apos;m dedicated to shaping the future of
-                electronics technology. 
+                I&apos;m an Electronics and Communication Engineer who enjoys building and experimenting with real-world systems. My work mainly revolves around embedded systems, IoT, and applying intelligence to hardware.
+
+                I like working on ideas that turn into something tangible — whether it&apos;s designing circuits, writing firmware, or connecting devices to solve practical problems.
+
+                Always curious, always learning, and always open to building something interesting.
               </p>
               <p>
-                Overall, I am grateful for the path I have chosen in the tech industry and am excited to see where it takes me in the future. Let&apos;s connect and collaborate to create the
-                next generation of transformative solutions together.
+              Let&apos;s connect and create something meaningful.
               </p>
             </div>
           </div>
@@ -99,7 +96,7 @@ export default function About() {
               <SocialLink
                 href="mailto:sushantsaroch13@gmail.com"
                 icon={MailIcon}
-                className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
+                className="mt-4"
               >
                 Email Me
               </SocialLink>
