@@ -30,7 +30,7 @@ export default function ProjectPage({ data, prevProject, nextProject }) {
             width={1200}
             height={750}
             sizes="(min-width: 1024px) 56rem, (min-width: 640px) 90vw, 100vw"
-            className="h-auto w-full rounded-xl"
+            className="w-full h-auto rounded-xl"
             unoptimized
           />
         </div>
@@ -64,13 +64,13 @@ export default function ProjectPage({ data, prevProject, nextProject }) {
         </header>
 
         {data.image && (
-          <div className="relative h-[400px] w-full">
+          <div className="mt-4 w-full bg-zinc-100 dark:bg-zinc-800 rounded-xl">
             <Image
-              src={urlFor(data.image).width(1400).height(800).quality(72).url()}
+              src={urlFor(data.image).width(1400).url()}
               alt={data.image.alt || data.title}
-              fill
-              sizes="(min-width: 1280px) 1280px, 100vw"
-              className="rounded-xl object-cover"
+              width={1400}
+              height={800}
+              className="w-full h-auto rounded-xl"
               priority
               unoptimized
             />

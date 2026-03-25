@@ -11,4 +11,6 @@
 # Built Visual Studio Code Extensions
 *.vsix
 
+.next
 node_modules
+.env.local
