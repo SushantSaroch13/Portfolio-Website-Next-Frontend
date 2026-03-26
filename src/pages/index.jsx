@@ -39,8 +39,9 @@ function ProjectCard({ project }) {
             />
           )}
         </div>
-
+        <div className="mt-3">
         <Card.Title>{project.title}</Card.Title>
+        </div>
 
         <Card.Description>{project.description}</Card.Description>
 
