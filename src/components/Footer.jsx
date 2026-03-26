@@ -13,7 +13,7 @@ function NavLink({ href, children }) {
   )
 }
 
-export function Footer() {
+export function Footer({ siteName }) {
   return (
     <footer className="mt-32">
       <Container.Outer>
@@ -25,8 +25,7 @@ export function Footer() {
                 <NavLink href="/projects">Projects</NavLink>
               </div>
               <p className="text-sm text-zinc-400 dark:text-zinc-500">
-                &copy; {new Date().getFullYear()} Sushant Saroch. All rights
-                reserved.
+                &copy; {new Date().getFullYear()} {siteName || 'Sushant Saroch'}. All rights reserved.
               </p>
             </div>
           </Container.Inner>

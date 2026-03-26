@@ -16,6 +16,7 @@ export function urlFor(source) {
   return builder.image(source).auto('format').fit('max')
 }
 
+// Existing project card fields
 export function projectCardFields() {
   return `
     title,
@@ -34,3 +35,15 @@ export function projectCardFields() {
     publishedAt
   `
 }
+
+// ✅ New: fetch siteSettings
+export async function getSiteSettings() {
+  const query = `*[_type == "siteSettings"][0]{
+    siteName,
+    avatar,
+    favicon,
+    socialPreview
+  }`
+  return client.fetch(query)
+}
+

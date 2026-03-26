@@ -6,6 +6,7 @@ import { Card } from '@/components/Card'
 import { SimpleLayout } from '@/components/SimpleLayout'
 import { client, projectCardFields, urlFor } from '@/lib/sanity'
 import { GitHubIcon } from '@/components/SocialIcons'
+import { PortableText } from '@portabletext/react'
 
 function SocialLink({ icon: Icon, children, ...props }) {
   return (
@@ -18,7 +19,7 @@ function SocialLink({ icon: Icon, children, ...props }) {
   )
 }
 
-export default function Projects({ projects = [] }) {
+export default function Projects({ projects = [], projectsPage = null }) {
   return (
     <>
       <Head>
@@ -30,8 +31,10 @@ export default function Projects({ projects = [] }) {
       </Head>
 
       <SimpleLayout
-        title="Things I’ve built trying to solve real-world problems."
-        intro="A collection of my projects across Embedded Systems, IoT, Machine Learning, and Power Electronics. Each project reflects hands-on engineering and practical implementation."
+        title={projectsPage?.title}
+        intro={
+          <PortableText value={projectsPage?.intro} />
+        }
       >
         <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
@@ -103,17 +106,18 @@ export default function Projects({ projects = [] }) {
 }
 
 export async function getStaticProps() {
-  const query = `
-    *[_type == 'project'] | order(publishedAt desc){
-      ${projectCardFields()}
-    }
-  `
+  const projectsQuery = `*[_type == 'project'] | order(publishedAt desc){ ${projectCardFields()} }`
+  const pageQuery = `*[_type == 'projectsPage'][0]{ title, intro }`
 
-  const projects = await client.fetch(query)
+  const [projects, projectsPage] = await Promise.all([
+    client.fetch(projectsQuery),
+    client.fetch(pageQuery),
+  ])
 
   return {
     props: {
       projects: projects ?? [],
+      projectsPage: projectsPage ?? null,
     },
     revalidate: 30,
   }

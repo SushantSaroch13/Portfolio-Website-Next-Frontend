@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Popover, Transition } from '@headlessui/react'
 import clsx from 'clsx'
+import { urlFor } from '@/lib/sanity'
 
 import { Container } from '@/components/Container'
-import avatarImage from '@/images/avatar.jpeg'
 import { Fragment, useEffect, useRef } from 'react'
 
 function CloseIcon(props) {
@@ -223,29 +223,26 @@ function AvatarContainer({ className, ...props }) {
   )
 }
 
-function Avatar({ large = false, className, ...props }) {
+// Inside your Avatar component:
+function Avatar({ large = false, src, ...props }) {
+  if (!src) return null;
+
+  const size = large ? 64 : 36;
+
   return (
-    <Link
-      href="/"
-      aria-label="Home"
-      className={clsx(className, 'pointer-events-auto')}
-      {...props}
-    >
+    <Link href="/" aria-label="Home" {...props}>
       <Image
-        src={avatarImage}
-        alt=""
-        sizes={large ? '4rem' : '2.25rem'}
-        className={clsx(
-          'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
-          large ? 'h-16 w-16' : 'h-9 w-9'
-        )}
-        // priority
+        src={urlFor(src).width(size).height(size).url()}
+        alt="Avatar"
+        width={size}
+        height={size}
+        className={`block rounded-full bg-zinc-100 object-cover dark:bg-zinc-800 ${large ? 'h-16 w-16' : 'h-9 w-9'}`}
       />
     </Link>
-  )
+  );
 }
 
-export function Header() {
+export function Header({ avatar }) {
   let isHomePage = useRouter().pathname === '/'
 
   let headerRef = useRef()
@@ -351,7 +348,7 @@ export function Header() {
   return (
     <>
       <header
-        className="pointer-events-none relative z-50 flex flex-col"
+        className="relative z-50 flex flex-col"
         style={{
           height: 'var(--header-height)',
           marginBottom: 'var(--header-mb)',
@@ -381,6 +378,7 @@ export function Header() {
                   />
                   <Avatar
                     large
+                    src={avatar} // pass the Sanity image here
                     className="block h-16 w-16 origin-left"
                     style={{ transform: 'var(--avatar-image-transform)' }}
                   />
@@ -402,7 +400,7 @@ export function Header() {
               <div className="flex flex-1">
                 {!isHomePage && (
                   <AvatarContainer>
-                    <Avatar />
+                    <Avatar src={avatar} />
                   </AvatarContainer>
                 )}
               </div>
