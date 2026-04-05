@@ -8,6 +8,37 @@ import { Container } from '@/components/Container'
 import { formatDate } from '@/lib/formatDate'
 import { GitHubIcon } from '@/components/SocialIcons'
 
+function CodeBlock({ value }) {
+  const language = value?.language || 'text'
+  const languageLabel =
+    {
+      cpp: 'C++',
+      json: 'JSON',
+      javascript: 'JavaScript',
+      typescript: 'TypeScript',
+      bash: 'Bash',
+      text: 'Plain text',
+    }[language] || language
+
+  return (
+    <div className="github-code-block not-prose my-8 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm shadow-zinc-950/5 dark:border-zinc-700/70 dark:bg-zinc-900">
+      <div className="flex items-center justify-between border-b border-zinc-200/80 bg-zinc-50/90 px-4 py-2.5 dark:border-zinc-700/70 dark:bg-zinc-800/90">
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
+        </div>
+        <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
+          {languageLabel}
+        </span>
+      </div>
+      <pre className="github-code-pre overflow-x-auto px-4 py-4 text-[13px] leading-6 text-[#1f2328] dark:text-[#e6edf3]">
+        <code className={`language-${language}`}>{value?.code}</code>
+      </pre>
+    </div>
+  )
+}
+
 function SocialLink({ icon: Icon, children, ...props }) {
   return (
     <Link className="group mt-4 flex items-center gap-2" {...props}>
@@ -35,10 +66,13 @@ export default function ProjectPage({ data, prevProject, nextProject }) {
           />
         </div>
       ),
-      code: ({ value }) => (
-        <pre className="overflow-x-auto rounded-lg bg-zinc-900 p-4 text-white">
-          <code>{value.code}</code>
-        </pre>
+      code: ({ value }) => <CodeBlock value={value} />,
+    },
+    marks: {
+      code: ({ children }) => (
+        <code className="rounded-md border border-zinc-200/80 bg-zinc-100 px-1.5 py-0.5 font-mono text-[0.9em] text-[#cf222e] dark:border-zinc-700/80 dark:bg-zinc-800 dark:text-[#ff7b72]">
+          {children}
+        </code>
       ),
     },
   }

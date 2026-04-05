@@ -2,3 +2,58 @@
 @import 'tailwindcss/components';
 @import './prism.css';
 @import 'tailwindcss/utilities';
+
+@layer components {
+  .github-code-block {
+    background-image:
+      radial-gradient(circle at top left, rgba(9, 105, 218, 0.06), transparent 32%),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.98));
+  }
+
+  .dark .github-code-block {
+    background-image:
+      radial-gradient(circle at top left, rgba(56, 139, 253, 0.12), transparent 34%),
+      linear-gradient(to bottom, rgba(13, 17, 23, 0.98), rgba(22, 27, 34, 0.98));
+  }
+
+  .github-code-pre {
+    margin: 0;
+    background: transparent;
+    font-family:
+      ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas,
+      'Liberation Mono', 'Courier New', monospace;
+    tab-size: 2;
+  }
+
+  .github-code-pre code {
+    display: block;
+    min-width: max-content;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  .prose :where(pre.github-code-pre):not(:where([class~='not-prose'] *)) {
+    background: transparent;
+    border-radius: 0;
+    color: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .prose :where(pre.github-code-pre code):not(:where([class~='not-prose'] *)) {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    padding: 0;
+  }
+
+  .prose :where(code):not(:where(pre code, [class~='not-prose'] *))::before,
+  .prose :where(code):not(:where(pre code, [class~='not-prose'] *))::after {
+    content: '';
+  }
+}
